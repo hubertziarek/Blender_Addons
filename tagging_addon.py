@@ -169,6 +169,21 @@ class ASSET_OT_EditMetadata(bpy.types.Operator):
         
         self.report({'INFO'}, f"Updated metadata for {len(assets)} asset(s).")
         return {'FINISHED'}
+    
+class ASSET_OT_FillWithDefaultValues(bpy.types.Operator):
+    """Fill All Metadata Fields with Default Values"""
+    bl_idname = "asset.fill_default"
+    bl_label = "Fill Default"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        context.scene.asset_description = "A 3D model in a low-poly aesthetic, suitable for games, animations, and concept art."
+        context.scene.asset_license = "Extended Commercial License (https://www.artstation.com/marketplace-product-eula)"
+        context.scene.asset_copyright = "SHAKAL"
+        context.scene.asset_author = "Hubert Ziarek"
+        
+        self.report({'INFO'}, "All fields are pre-filled with default values.")
+        return {'FINISHED'}
 
 # Panels
 class ASSET_PT_TagManagerPanel(bpy.types.Panel):
@@ -226,6 +241,7 @@ class ASSET_PT_MetadataManagerPanel(bpy.types.Panel):
         col.prop(context.scene, "asset_license", text="License")
         col.prop(context.scene, "asset_copyright", text="Copyright")
         col.prop(context.scene, "asset_author", text="Author")
+        col.operator("asset.fill_default", text="Fill Default")
         col.operator("asset.edit_metadata", text="Apply Metadata")
 
 # Registration
@@ -255,6 +271,7 @@ def register():
     bpy.utils.register_class(ASSET_PT_TagManagerPanel)
 
     bpy.utils.register_class(ASSET_OT_EditMetadata)
+    bpy.utils.register_class(ASSET_OT_FillWithDefaultValues)
     bpy.utils.register_class(ASSET_PT_MetadataManagerPanel)
 
 def unregister():
@@ -279,6 +296,7 @@ def unregister():
     bpy.utils.unregister_class(ASSET_PT_TagManagerPanel)
 
     bpy.utils.unregister_class(ASSET_OT_EditMetadata)
+    bpy.utils.unregister_class(ASSET_OT_FillWithDefaultValues)
     bpy.utils.unregister_class(ASSET_PT_MetadataManagerPanel)
 
 if __name__ == "__main__":
